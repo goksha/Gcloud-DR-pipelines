@@ -9,11 +9,12 @@ jobs:
     permissions:
       contents: 'read'
       id-token: 'write'
-    runs-on: node16
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash    
     steps:
+    - uses: 'actions/checkout@v3'
     - id: 'auth'
       uses: 'google-github-actions/auth@v1'
       with:
