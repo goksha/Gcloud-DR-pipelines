@@ -14,20 +14,13 @@ jobs:
       run:
         shell: bash    
     steps:
-    - uses: 'actions/checkout@v3'
     - id: 'auth'
       uses: 'google-github-actions/auth@v1'
       with:
-        workload_identity_provider: 'projects/860974856875/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-        service_account: 'terraform-githubactions-ci-cd@eco-tenure-393916.iam.gserviceaccount.com'
+        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
 
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v1'
-      with:
-        version: '>= 363.0.0'
 
     - name: 'Use gcloud CLI'
       run: 'gcloud info'
-      
-    - name: 'test functionality'
-      run: 'gcloud projects describe eco-tenure-393916'
