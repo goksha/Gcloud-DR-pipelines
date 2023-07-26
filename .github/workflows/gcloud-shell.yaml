@@ -24,3 +24,6 @@ jobs:
 
     - name: 'Use gcloud CLI'
       run: 'gcloud info'
+
+    - name: 'test functionality'
+      run: 'gcloud auth list --filter=status:ACTIVE --format="value(account)"'
