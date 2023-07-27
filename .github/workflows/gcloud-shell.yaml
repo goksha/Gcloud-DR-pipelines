@@ -33,4 +33,4 @@ jobs:
             tar -zxvf velero-v1.10.2-linux-amd64.tar.gz
           fi
     - name: 'directry'
-      run: 'ls'
+      run: 'echo $PATH'
