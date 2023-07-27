@@ -26,7 +26,8 @@ jobs:
       run: 'gcloud info'
 
     - name: 'test functionality'
-      run: 'gcloud auth list --filter=status:ACTIVE --format="value(account)"'
-      
-    - name: 'second test'
-      run: 'gcloud projects describe eco-tenure-393916'
+      run: |
+        PROJECT_ID=$(gcloud config get-value project)
+        gcloud iam service-accounts create velero \
+            --display-name "Velero service account"
+
