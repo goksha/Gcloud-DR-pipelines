@@ -24,7 +24,9 @@ jobs:
 
     - name: 'Use gcloud CLI'
       run: 'gcloud info'
-
+    - name: 'INstall plugins for google cloud'
+      run: 'gcloud components install gke-gcloud-auth-plugin'
+      
     - name: 'create velero service account'
       run: |
         echo "-------Download and Install verlero CLI if needed"
