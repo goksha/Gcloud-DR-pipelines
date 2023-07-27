@@ -27,7 +27,6 @@ jobs:
 
     - name: 'create velero service account'
       run: |
-        BUCKET= 'shagok-velero-backup'
         PROJECT_ID=$(gcloud config get-value project)
         gcloud iam service-accounts create velero \
             --display-name "Velero service account"
@@ -51,7 +50,7 @@ jobs:
         gcloud projects add-iam-policy-binding $PROJECT_ID \
             --member serviceAccount:$SERVICE_ACCOUNT_EMAIL \
             --role projects/$PROJECT_ID/roles/velero.server
-        gsutil iam ch serviceAccount:$SERVICE_ACCOUNT_EMAIL:objectAdmin gs://${BUCKET}
+        gsutil iam ch serviceAccount:$SERVICE_ACCOUNT_EMAIL:objectAdmin gs://shagok-velero-backup
         gcloud iam service-accounts keys create credentials-velero \
             --iam-account $SERVICE_ACCOUNT_EMAIL
     - name: 'directry'
