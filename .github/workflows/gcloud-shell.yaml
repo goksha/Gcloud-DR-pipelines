@@ -27,31 +27,13 @@ jobs:
 
     - name: 'create velero service account'
       run: |
-        PROJECT_ID=$(gcloud config get-value project)
-        gcloud iam service-accounts create velero \
-            --display-name "Velero service account"
-        SERVICE_ACCOUNT_EMAIL=$(gcloud iam service-accounts list \
-            --filter="displayName:Velero service account" \
-            --format 'value(email)')
-        ROLE_PERMISSIONS=(
-             compute.disks.get
-             compute.disks.create
-             compute.disks.createSnapshot
-             compute.snapshots.get
-             compute.snapshots.create
-             compute.snapshots.useReadOnly
-             compute.snapshots.delete
-             compute.zones.get
-             )
-        gcloud iam roles create velero.server \
-            --project $PROJECT_ID \
-            --title "Velero Server" \
-            --permissions "$(IFS=","; echo "${ROLE_PERMISSIONS[*]}")"
-        gcloud projects add-iam-policy-binding $PROJECT_ID \
-            --member serviceAccount:$SERVICE_ACCOUNT_EMAIL \
-            --role projects/$PROJECT_ID/roles/velero.server
-        gsutil iam ch serviceAccount:$SERVICE_ACCOUNT_EMAIL:objectAdmin gs://shagok-velero-backup
-        gcloud iam service-accounts keys create credentials-velero \
-            --iam-account $SERVICE_ACCOUNT_EMAIL
+        echo "-------Download and Install verlero CLI if needed"
+          if [ ! -f ~/gke-casa/velero ]; then
+            wget https://github.com/vmware-tanzu/velero/releases/download/v1.10.2/velero-v1.10.2-linux-amd64.tar.gz
+            tar -zxvf velero-v1.10.2-linux-amd64.tar.gz
+            sudo mv velero-v1.10.2-linux-amd64/velero ~/usr/local/bin
+            sudo rm velero-v1.10.2-linux-amd64.tar.gz
+            sudo rm -rf velero-v1.10.2-linux-amd64
+          fi
     - name: 'directry'
-      run: 'ls'
+      run: 'velero --help'
