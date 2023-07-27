@@ -35,3 +35,4 @@ jobs:
     - name: 'directry'
       run: |
         mkdir -p ~/bin && mv velero-v1.10.2-linux-amd64/velero ~/bin && echo 'export PATH="$PATH:$HOME/bin"' >> ~/.bashrc && source ~/.bashrc
+        velero --help
