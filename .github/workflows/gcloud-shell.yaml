@@ -32,7 +32,14 @@ jobs:
             wget https://github.com/vmware-tanzu/velero/releases/download/v1.10.2/velero-v1.10.2-linux-amd64.tar.gz
             tar -zxvf velero-v1.10.2-linux-amd64.tar.gz
           fi
-    - name: 'directry'
+    - name: 'Add velero to PATH'
       run: |
         mkdir -p ~/bin && cp velero-v1.10.2-linux-amd64/velero ~/bin && echo 'export PATH="$PATH:$HOME/bin"' >> ~/.bashrc && export PATH="$PATH:$HOME/bin"
-        velero --help
+    - name: 'Install velero'
+      run: |
+        velero install \
+          --provider gcp \
+          --plugins velero/velero-plugin-for-gcp:v1.1.0 \
+          --bucket 'shagok-velero-backup' \
+          --secret-file '${{ secrets.GCP_CREDENTIALS }}'
+        
