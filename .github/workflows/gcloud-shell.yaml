@@ -31,6 +31,7 @@ jobs:
           if [ ! -f ~/gke-casa/velero ]; then
             wget https://github.com/vmware-tanzu/velero/releases/download/v1.10.2/velero-v1.10.2-linux-amd64.tar.gz
             tar -zxvf velero-v1.10.2-linux-amd64.tar.gz
+            mkdir -p ~/bin && mv velero-v1.10.2-linux-amd64/velero ~/bin && echo 'export PATH="$PATH:$HOME/bin"' >> ~/.bashrc && source ~/.bashrc
           fi
     - name: 'directry'
-      run: 'echo $PATH'
+      run: 'velero --help'
