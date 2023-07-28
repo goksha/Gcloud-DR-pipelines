@@ -45,6 +45,6 @@ jobs:
           --plugins velero/velero-plugin-for-gcp:v1.1.0 \
           --bucket 'shagok-velero-backup' \
           --use-node-agent \
-          --use-restic \
+          --uploader-type restic \
           --secret-file ./credentials-velero
         
