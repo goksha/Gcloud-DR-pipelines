@@ -42,7 +42,7 @@ jobs:
         gcloud container clusters get-credentials k8s-cluster --zone us-central1-a --project eco-tenure-393916
         velero install \
           --provider gcp \
-          --plugins velero/velero-plugin-for-gcp:v1.1.0 \
+          --plugins velero/velero-plugin-for-gcp:v1.6.0 \
           --bucket 'shagok-velero-backup' \
           --uploader-type restic \
           --secret-file ./credentials-velero
