@@ -41,9 +41,11 @@ jobs:
           --iam-account terraform-githubactions-ci-cd@eco-tenure-393916.iam.gserviceaccount.com
         gcloud container clusters get-credentials k8s-cluster --zone us-central1-a --project eco-tenure-393916
         velero install \
+          --uploader-type restic \
+          --use-volume-snapshots=false \
           --provider gcp \
           --plugins velero/velero-plugin-for-gcp:v1.6.0 \
           --bucket 'shagok-velero-backup' \
-          --uploader-type restic \
           --secret-file ./credentials-velero
+          
         
