@@ -31,22 +31,21 @@ jobs:
       run: |
         echo "-------Download and Install verlero CLI if needed"
           if [ ! -f ~/gke-casa/velero ]; then
-            wget https://github.com/vmware-tanzu/velero/releases/download/v1.10.1/velero-v1.10.1-linux-amd64.tar.gz
-            tar -zxvf velero-v1.10.1-linux-amd64.tar.gz
+            wget https://github.com/vmware-tanzu/velero/releases/download/v1.10.2/velero-v1.10.2-linux-amd64.tar.gz
+            tar -zxvf velero-v1.10.2-linux-amd64.tar.gz
           fi
     - name: 'Add velero to PATH'
       run: |
-        mkdir -p ~/bin && cp velero-v1.10.1-linux-amd64/velero ~/bin && echo 'export PATH="$PATH:$HOME/bin"' >> ~/.bashrc && export PATH="$PATH:$HOME/bin"
+        mkdir -p ~/bin && cp velero-v1.10.2-linux-amd64/velero ~/bin && echo 'export PATH="$PATH:$HOME/bin"' >> ~/.bashrc && export PATH="$PATH:$HOME/bin"
         gcloud iam service-accounts keys create credentials-velero \
           --iam-account terraform-githubactions-ci-cd@eco-tenure-393916.iam.gserviceaccount.com
         gcloud container clusters get-credentials k8s-cluster --zone us-central1-a --project eco-tenure-393916
-        velero install \  
+        velero install \
+          --uploader-type restic \
           --use-volume-snapshots=false \
           --provider gcp \
-          --plugins velero/velero-plugin-for-gcp:v1.6.0 \
-          --plugins velero/velero-plugin-for-csi:v0.4.2 \
-          --bucket 'shagok-velero-backup' \
+          --plugins velero/velero-plugin-for-gcp:v1.6.0,velero/velero-plugin-for-csi:v0.4.2 \
           --use-node-agent --features=enableCSI \
+          --bucket 'shagok-velero-backup' \
           --secret-file ./credentials-velero
           
-        
