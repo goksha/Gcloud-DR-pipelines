@@ -43,7 +43,8 @@ jobs:
         velero install \  
           --use-volume-snapshots=false \
           --provider gcp \
-          --plugins velero/velero-plugin-for-gcp:v1.5.0,velero/velero-plugin-for-csi:v0.4.2 \
+          --plugins velero/velero-plugin-for-gcp:v1.6.0 \
+          --plugins velero/velero-plugin-for-csi:v0.4.2 \
           --bucket 'shagok-velero-backup' \
           --use-node-agent --features=enableCSI \
           --secret-file ./credentials-velero
