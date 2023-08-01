@@ -64,7 +64,7 @@ jobs:
         set -e
         kubectl wait pods --all --namespace=velero --for=condition=Ready --timeout=300s
         echo "Velero installation is completed. Proceeding with restoration."
-        sleep 10
+        sleep 5
         # Output file to save timing information
         OUTPUT_FILE="timing_output.txt"
 
