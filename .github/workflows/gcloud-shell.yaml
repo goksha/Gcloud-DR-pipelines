@@ -64,7 +64,7 @@ jobs:
         set -e
         kubectl wait pods --all --namespace=velero --for=condition=Ready --timeout=300s
         echo "Velero installation is completed. Proceeding with restoration."
-        sleep 10
+        sleep 5
         # Output file to save timing information
         OUTPUT_FILE="timing_output.txt"
 
@@ -83,7 +83,7 @@ jobs:
           velero get backup-locations
           velero get backups
           velero restore create --include-namespaces wordpress --from-backup azure-restic-test
-          sleep 3
+          sleep 10
           # Wait for all resources in the namespace to be ready
           time kubectl wait pods --all --namespace=wordpress --for=condition=Ready --timeout=300s 2>&1 | tee -a "$GITHUB_WORKSPACE/$OUTPUT_FILE"
           # Calculate duration
