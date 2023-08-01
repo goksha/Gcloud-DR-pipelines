@@ -60,11 +60,11 @@ jobs:
           type: pd-standard
         EOF
         set +e
-        kubectl create -f storage-class-gcp.yml
+        kubectl create -f storage-class-Azure.yml
         set -e
         kubectl wait pods --all --namespace=velero --for=condition=Ready --timeout=300s
         echo "Velero installation is completed. Proceeding with restoration."
-        sleep 5
+        sleep 10
         # Output file to save timing information
         OUTPUT_FILE="timing_output.txt"
 
@@ -81,6 +81,7 @@ jobs:
           # Start timing
           start_time=$(date +%s)
           velero get backup-locations
+          velero get backups
           velero restore create --include-namespaces wordpress --from-backup azure-restic-test
           sleep 2
           # Wait for all resources in the namespace to be ready
