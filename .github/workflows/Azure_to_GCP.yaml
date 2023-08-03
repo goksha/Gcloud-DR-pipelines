@@ -39,16 +39,23 @@ jobs:
     - name: 'Add velero to PATH'
       run: |
         mkdir -p ~/bin && cp velero-v1.10.2-linux-amd64/velero ~/bin && echo 'export PATH="$PATH:$HOME/bin"' >> ~/.bashrc && export PATH="$PATH:$HOME/bin"
-        echo '${{secrets.GCP_CREDENTIALS}}' > credentials-velero
-        ls
         gcloud container clusters get-credentials k8s-cluster --zone us-central1-a --project eco-tenure-393916
+        cat << EOF > ./credentials-velero
+        AZURE_SUBSCRIPTION_ID=${{secrets.AZURE_SUBSCRIPTION_ID}}
+        AZURE_TENANT_ID=${{secrets.AZURE_TENANT_ID}}
+        AZURE_CLIENT_ID=${{secrets.AZURE_CLIENT_ID}}
+        AZURE_CLIENT_SECRET=${{secrets.AZURE_CLIENT_SECRET}}
+        AZURE_RESOURCE_GROUP=my-aks-cluster-rg
+        AZURE_CLOUD_NAME=AzurePublicCloud
+        EOF
         velero install \
           --uploader-type restic \
           --use-volume-snapshots=false \
-          --provider gcp \
+          --provider azure \
           --plugins velero/velero-plugin-for-gcp:v1.6.0,velero/velero-plugin-for-csi:v0.4.2,velero/velero-plugin-for-microsoft-azure:v1.6.0 \
           --use-node-agent --features=enableCSI \
-          --bucket 'shagok-velero-backup' \
+          --bucket 'velerobackup' \
+          --backup-location-config resourceGroup=my-aks-cluster-rg,storageAccount=velerobackupshagok \
           --secret-file ./credentials-velero
         cat << EOF > storage-class-Azure.yml
         apiVersion: storage.k8s.io/v1
@@ -76,7 +83,7 @@ jobs:
         }
 
         # Loop 20 times
-        for ((i = 1; i <= 20; i++)); do
+        for ((i = 1; i <= 1; i++)); do
           echo "Running loop $i"
           # Start timing
           start_time=$(date +%s)
@@ -90,8 +97,8 @@ jobs:
           end_time=$(date +%s)
           duration=$((end_time - start_time))
           #clear the cluster for next iteration
-          kubectl delete ns wordpress
-          kubectl wait namespace wordpress --for=delete
+          #kubectl delete ns wordpress
+          #kubectl wait namespace wordpress --for=delete
           # Print total duration with iteration number
           print_timing "$duration"
           echo "Loop $i completed."
