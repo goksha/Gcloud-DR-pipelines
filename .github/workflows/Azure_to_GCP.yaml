@@ -1,4 +1,4 @@
-name: Google cloud shell
+name: "Azure object store to GCP"
 
 on:
   workflow_dispatch:
