@@ -1,4 +1,4 @@
-name: "Azure object store to GCP"
+name: "Azure to GCP failover"
 
 on:
   workflow_dispatch:
