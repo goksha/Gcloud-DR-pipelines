@@ -126,11 +126,11 @@ jobs:
         end_time=$(date +%s)
         duration=$((end_time - start_time))
         #clear the cluster for next iteration
-        kubectl delete ns wordpress
-        kubectl wait namespace wordpress --for=delete
+        #kubectl delete ns wordpress
+        #kubectl wait namespace wordpress --for=delete
         # Print total duration with iteration number
         print_timing "$duration"
-        echo "Loop $i completed."
+        #echo "Loop $i completed."
         done
     
     - name: Terraform Destroy
@@ -143,4 +143,14 @@ jobs:
       with:
         name: timing_output
         path: timing_output.txt
-
+    - name: Trigger Next Iteration
+      env:
+        TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        REPO_OWNER: goksha
+        REPO_NAME: test-gcloud-shell
+        WORKFLOW_NAME: Azure_to_GCP_failover.yml
+      run: |
+         curl -X POST -H "Authorization: Bearer $TOKEN" \
+         -H "Accept: application/vnd.github.v3+json" \
+         https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/actions/workflows/$WORKFLOW_NAME/dispatches \
+         -d '{"ref":"main"}'
