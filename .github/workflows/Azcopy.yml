@@ -23,4 +23,4 @@ jobs:
           export AZCOPY_DEST="https://gcpsyncazure.blob.core.windows.net?${{secrets.SAS_TOKEN}}"
           azcopy --version
           # Replace with your AzCopy command
-          azcopy copy "$AZCOPY_SOURCE" "$AZCOPY_DEST" --recursive=true
+          azcopy sync "$AZCOPY_SOURCE" "$AZCOPY_DEST" --recursive=true
