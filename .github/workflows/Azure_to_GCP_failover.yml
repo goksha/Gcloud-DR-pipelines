@@ -5,6 +5,9 @@ on:
 
 jobs:
   terraform:
+    permissions:
+      contents: 'read'
+      id-token: 'write'  
     name: 'Terraform'
     runs-on: ubuntu-latest
 
