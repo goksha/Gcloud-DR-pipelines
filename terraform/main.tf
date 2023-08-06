@@ -18,7 +18,7 @@ resource "google_container_cluster" "main" {
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
     ]
-  machine_type    = "e2-standard-4"  
+  machine_type    = "e2-standard-2"  
   }
   timeouts {
     create = "30m"
