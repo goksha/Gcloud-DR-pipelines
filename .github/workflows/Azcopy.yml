@@ -1,21 +1,27 @@
-name: "Azcopy test"
+name: GCS to Azure Transfer
 
 on:
   workflow_dispatch:
 
 jobs:
-   Azcopy:
-    name: 'Azcopy'
+  transfer_job:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
 
-    - name: install azcopy
-      run: |
-        wget -O azcopy_v10.tar.gz https://aka.ms/downloadazcopy-v10-linux && tar -xf azcopy_v10.tar.gz --strip-components=1
-        ls
-        ./azcopy list -h
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          version: 'latest'
+          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Transfer data from GCS to Azure
+        run: |
+          # Set up AzCopy environment variables
+          export AZCOPY_SOURCE="https://storage.cloud.google.com/testbucketazcopy"
+          export AZCOPY_DEST="https://gcpsyncazure.blob.core.windows.net/gcpbucket?sp=r&st=2023-08-06T15:11:13Z&se=2024-04-30T23:11:13Z&spr=https&sv=2022-11-02&sr=c&sig=ZfID7kSHrpuOhOYq7J%2BWjB8T2HFQwaT2UgKY9VMx4xU%3D"
+
+          # Replace with your AzCopy command
+          azcopy copy "$AZCOPY_SOURCE" "$AZCOPY_DEST" --recursive=true
