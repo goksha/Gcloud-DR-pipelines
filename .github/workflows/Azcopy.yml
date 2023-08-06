@@ -1,7 +1,8 @@
 name: GCS to Azure Transfer
 
 on:
-  workflow_dispatch:
+  schedule:
+    - cron: '*/120 * * * *'  # Runs every minute
 
 jobs:
   transfer_job:
