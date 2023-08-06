@@ -1,0 +1,20 @@
+name: "Azcopy test"
+
+on:
+  workflow_dispatch:
+
+jobs:
+   Azcopy:
+    name: 'Azcopy'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: install azcopy
+      run: |
+        wget -O azcopy_v10.tar.gz https://aka.ms/downloadazcopy-v10-linux && tar -xf azcopy_v10.tar.gz --strip-components=1
+        ls
