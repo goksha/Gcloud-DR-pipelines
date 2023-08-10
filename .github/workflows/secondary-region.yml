@@ -75,7 +75,6 @@ jobs:
         gcloud container clusters get-credentials k8s-cluster-secondary --zone us-west2-a --project eco-tenure-393916
         echo '${{secrets.GCP_CREDENTIALS}}' > credentials-velero
         ls
-        gcloud container clusters get-credentials k8s-cluster --zone us-central1-a --project eco-tenure-393916
         velero install \
           --uploader-type restic \
           --use-volume-snapshots=false \
