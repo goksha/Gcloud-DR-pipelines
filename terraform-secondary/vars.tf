@@ -13,7 +13,7 @@ variable "region" {
 variable "location" {
   type        = string
   description = "cluster location"
-  default     = "us-us-west2-a"
+  default     = "us-west2-a"
 }
 
 variable "project_id" {
