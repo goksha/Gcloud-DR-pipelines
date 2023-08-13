@@ -1,4 +1,4 @@
-name: "GCP Secondary Region Deployment"
+name: "GCP Region Failover"
 
 on:
   workflow_dispatch:
