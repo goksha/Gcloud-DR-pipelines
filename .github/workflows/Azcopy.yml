@@ -2,7 +2,7 @@ name: GCS to Azure Transfer
 
 on:
   schedule:
-    - cron: '*/120 * * * *'  # Runs every minute
+    - cron: '*/5 * * * *'  # Runs every minute
 
 jobs:
   transfer_job:
@@ -21,7 +21,7 @@ jobs:
         run: |
           # Set up AzCopy environment variables
           export AZCOPY_SOURCE="https://storage.cloud.google.com/shagok-velero-backup"
-          export AZCOPY_DEST="https://gcpsyncazure.blob.core.windows.net?${{secrets.SAS_TOKEN}}"
+          export AZCOPY_DEST="https://shagokgcpsyncazure.blob.core.windows.net?${{secrets.SAS_TOKEN}}"
           azcopy --version
           # Replace with your AzCopy command
           azcopy copy "$AZCOPY_SOURCE" "$AZCOPY_DEST" --recursive=true
