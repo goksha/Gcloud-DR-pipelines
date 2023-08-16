@@ -2,7 +2,7 @@ name: GCS to Azure Transfer
 
 on:
   schedule:
-    - cron: '*/5 * * * *'  # Runs every minute
+    - cron: '*/360 * * * *'  # Runs every minute
 
 jobs:
   transfer_job:
